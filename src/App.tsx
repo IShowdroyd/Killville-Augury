@@ -106,14 +106,14 @@ const App = () => {
             </label>
             <form className="bl-form-matrix" onSubmit={handleUnlock}>
               <input
-                className="bl-input-matrix"
-                id="access-key"
-                type="password"
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                placeholder="Access Key"
-                autoFocus
-              />
+  className="bl-input-matrix"
+  id="access-key"
+  type="password"
+  value={input}
+  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInput(e.target.value)}
+  placeholder="Access Key"
+  autoFocus
+/>
               <button className="bl-btn-matrix" type="submit">
                 OK
               </button>
