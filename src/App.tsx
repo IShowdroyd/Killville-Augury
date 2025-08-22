@@ -77,10 +77,12 @@ function HomePage() {
   );
 }
 
-const [unlocked, setUnlocked] = useState<boolean>(
-  sessionStorage.getItem("killville_key_ok") === "true"
-);
-const [input, setInput] = useState<string>("");
+// ✅ CORRETO - Função App com useState DENTRO
+const App = () => {
+  const [unlocked, setUnlocked] = useState<boolean>(
+    sessionStorage.getItem("killville_key_ok") === "true"
+  );
+  const [input, setInput] = useState<string>("");
 
   function handleUnlock(e: React.FormEvent) {
     e.preventDefault();
@@ -105,14 +107,14 @@ const [input, setInput] = useState<string>("");
             </label>
             <form className="bl-form-matrix" onSubmit={handleUnlock}>
               <input
-  className="bl-input-matrix"
-  id="access-key"
-  type="password"
-  value={input}
-  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInput(e.target.value)}
-  placeholder="Access Key"
-  autoFocus
-/>
+                className="bl-input-matrix"
+                id="access-key"
+                type="password"
+                value={input}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setInput(e.target.value)}
+                placeholder="Access Key"
+                autoFocus
+              />
               <button className="bl-btn-matrix" type="submit">
                 OK
               </button>
@@ -136,6 +138,6 @@ const [input, setInput] = useState<string>("");
       </Routes>
     </BrowserRouter>
   );
-}
+};
 
 export default App;
