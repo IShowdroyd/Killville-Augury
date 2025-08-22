@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./blockland-matrix.css";
 import ComicPage from "./ComicPage";
@@ -9,7 +9,6 @@ const ACCESS_KEY = "paoebao";
 // HOME PAGE (AUGURY) - SEM NAVBAR AQUI
 function HomePage() {
   const posters = [
-    // ... todos os posters (mantém igual)
     { type: "image", src: "https://dokhoacjskbtvbgssfft.supabase.co/storage/v1/object/sign/truth-posters/poster1.png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mYTc5MjI0Mi1mNmVkLTRiZjMtYWE4OS1iNmZmNjY5MzhmMWMiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJ0cnV0aC1wb3N0ZXJzL3Bvc3RlcjEucG5nIiwiaWF0IjoxNzU1NzEwMjk1LCJleHAiOjE3ODcyNDYyOTV9.Km5_o4U1bresH_--pYKPvZbg6nc7dY382sp2PM_DCa0" },
     { type: "image", src: "https://dokhoacjskbtvbgssfft.supabase.co/storage/v1/object/sign/truth-posters/poster2.png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mYTc5MjI0Mi1mNmVkLTRiZjMtYWE4OS1iNmZmNjY5MzhmMWMiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJ0cnV0aC1wb3N0ZXJzL3Bvc3RlcjIucG5nIiwiaWF0IjoxNzU1NzEwMzEwLCJleHAiOjE3ODcyNDYzMTB9.EWX_8z8Eg83zmwBiX-zNXNhclkpOplB93jfwB-eOKzI" },
     { type: "image", src: "https://dokhoacjskbtvbgssfft.supabase.co/storage/v1/object/sign/truth-posters/poster3.png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9mYTc5MjI0Mi1mNmVkLTRiZjMtYWE4OS1iNmZmNjY5MzhmMWMiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJ0cnV0aC1wb3N0ZXJzL3Bvc3RlcjMucG5nIiwiaWF0IjoxNzU1NzEwMzIzLCJleHAiOjE3ODcyNDYzMjN9.cGO-hQVRPO-h4_CwlmVxbXx-KxgvDq26HpzW0eRO8ww" },
@@ -36,7 +35,6 @@ function HomePage() {
 
   return (
     <div className="main-bg-matrix">
-      {/* NAVBAR REMOVIDA DAQUI */}
       <div className="posters-wall">
         {posters.map((poster, i) =>
           poster.type === "image" ? (
@@ -79,8 +77,7 @@ function HomePage() {
   );
 }
 
-// APP PRINCIPAL
-const App: React.FC = () => {
+const App = () => {
   const [unlocked, setUnlocked] = useState(
     sessionStorage.getItem("killville_key_ok") === "true"
   );
@@ -113,7 +110,7 @@ const App: React.FC = () => {
                 id="access-key"
                 type="password"
                 value={input}
-                onChange={(e) => setInput(e.target.value)}
+                onChange={(e) => setInput(e.target.value || "")}
                 placeholder="Access Key"
                 autoFocus
               />
