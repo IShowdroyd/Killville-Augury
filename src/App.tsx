@@ -81,7 +81,7 @@ const App = () => {
   const [unlocked, setUnlocked] = useState(
     sessionStorage.getItem("killville_key_ok") === "true"
   );
-  const [input, setInput] = useState<string>("");
+  const [input, setInput] = useState("");
 
   function handleUnlock(e: React.FormEvent) {
     e.preventDefault();
@@ -110,7 +110,7 @@ const App = () => {
                 id="access-key"
                 type="password"
                 value={input}
-                onChange={(e) => setInput(e.target.value ?? "")}
+                onChange={(e) => setInput(e.target.value)}
                 placeholder="Access Key"
                 autoFocus
               />
