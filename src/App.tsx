@@ -37,36 +37,37 @@ function HomePage() {
     <div className="main-bg-matrix">
       <div className="posters-wall">
         {posters.map((poster, i) =>
-          poster.type === "image" ? (
-            <img
-              key={i}
-              src={poster.src}
-              className={`poster-img poster-img-${i}`}
-              alt=""
-              onClick={() => setLightbox(poster.src)}
-              draggable={false}
-              style={{ zIndex: i + 2 }}
-            />
-          ) : (
-            <iframe
-              key={i}
-              src={`https://www.youtube.com/embed/${poster.id}?autoplay=0&mute=0&controls=1&loop=0&modestbranding=1&rel=0`}
-              className={`poster-img poster-youtube poster-img-${i}`}
-              allow="autoplay; encrypted-media"
-              allowFullScreen={false}
-              style={{
-                zIndex: i + 2,
-                width: "444px",
-                height: "522px",
-                border: "none",
-                background: "#000"
-              }}
-              tabIndex={-1}
-              frameBorder="0"
-              title="Vídeo Poster"
-            />
-          )
-        )}
+  poster.type === "image" && poster.src ? (
+    <img
+      key={i}
+      src={poster.src}
+      className={`poster-img poster-img-${i}`}
+      alt=""
+      onClick={() => setLightbox(poster.src!)}
+      draggable={false}
+      style={{ zIndex: i + 2 }}
+    />
+  ) : poster.type === "youtube" ? (
+    <iframe
+      key={i}
+      src={`https://www.youtube.com/embed/${poster.id}?autoplay=0&mute=0&controls=1&loop=0&modestbranding=1&rel=0`}
+      className={`poster-img poster-youtube poster-img-${i}`}
+      allow="autoplay; encrypted-media"
+      allowFullScreen={false}
+      style={{
+        zIndex: i + 2,
+        width: "444px",
+        height: "522px",
+        border: "none",
+        background: "#000"
+      }}
+      tabIndex={-1}
+      frameBorder="0"
+      title="Vídeo Poster"
+    />
+  ) : null
+)}
+
         {lightbox && (
           <div className="poster-lightbox" onClick={() => setLightbox(null)}>
             <img src={lightbox} alt="" className="poster-lightbox-img" />
