@@ -4,7 +4,7 @@
 
 body,
 html {
-  cursor: url('/CUR_3darrow.png') 0 0, auto !important;
+  cursor: auto !important;
 }
 
 /* --- LOGIN (tela de key) --- */
@@ -178,7 +178,7 @@ html {
 
 body,
 html {
-  cursor: url('/CUR_3darrow.png'), auto !important;
+  cursor: auto !important;
 }
 
 /* Específico para a área vazia abaixo da navbar */
@@ -309,7 +309,7 @@ summary,
 [role='button'],
 [role='link'],
 .clicavel {
-  cursor: url('/RHand.png'), pointer !important;
+  cursor: pointer !important;
 }
 
 /* Bagunça de rotação individual (troque/adicione quantas quiser) */
@@ -1010,4 +1010,5 @@ summary,
   letter-spacing: 1px;
   margin-top: 20px;
 }
+
 
