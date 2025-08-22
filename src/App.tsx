@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-//import "./blockland-matrix.css";
+import "./blockland-matrix.css";
 import ComicPage from "./ComicPage";
 import AuguryNavbar from "./AuguryNavbar";
 
