@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { getAllChapters } from "./comicData";
 import "./blockland-matrix.css";
 
 const ComicPage = () => {
+  const navigate = useNavigate();
   const [chapters, setChapters] = useState<any[]>([]);
   const [showDropdown, setShowDropdown] = useState(false);
   const [hoveredChapter, setHoveredChapter] = useState<number | null>(null);
@@ -48,12 +50,7 @@ const ComicPage = () => {
   };
 
   const goToAugury = () => {
-    // Navegação para a página principal (onde estão os posters)
-    window.location.href = '/'; // ou a rota que você usa para a página principal
-    // Se usar React Router: 
-    // import { useNavigate } from 'react-router-dom';
-    // const navigate = useNavigate();
-    // navigate('/');
+    navigate('/');
   };
 
   return (
@@ -122,17 +119,16 @@ const ComicPage = () => {
             </div>
           ) : (
             <div className="comic-pages-container">
-{chapters.map((chapter, chapterIndex) => (
-  <div key={chapterIndex}>
-    <div id={`chapter-${chapterIndex}`} className="comic-chapter-anchor" />
-    
-    {/* Título do capítulo */}
-    <h2 className="chapter-title">
-      Chapter {chapterIndex + 1}
-    </h2>
-    
-    {chapter.pages.map((page: any, pageIndex: number) => (
-
+              {chapters.map((chapter, chapterIndex) => (
+                <div key={chapterIndex}>
+                  <div id={`chapter-${chapterIndex}`} className="comic-chapter-anchor" />
+                  
+                  {/* Título do capítulo */}
+                  <h2 className="chapter-title">
+                    Chapter {chapterIndex + 1}
+                  </h2>
+                  
+                  {chapter.pages.map((page: any, pageIndex: number) => (
                     <div key={pageIndex} className="comic-page-wrapper">
                       <div id={`page-${chapterIndex}-${pageIndex}`} className="comic-page-anchor" />
                       <img
@@ -144,15 +140,14 @@ const ComicPage = () => {
                     </div>
                   ))}
                   
-<div className="comic-chapter-separator">
-  <div className="comic-end-text">END OF CHAPTER {chapterIndex + 1}</div>
-  <div className="comic-separator-line">◆ ◆ ◆</div>
-  {/* Só mostra "in the making" se for o último capítulo */}
-  {chapterIndex === chapters.length - 1 && (
-    <div className="comic-next-text">Chapter {chapterIndex + 2} in the making...</div>
-  )}
-</div>
-
+                  <div className="comic-chapter-separator">
+                    <div className="comic-end-text">END OF CHAPTER {chapterIndex + 1}</div>
+                    <div className="comic-separator-line">◆ ◆ ◆</div>
+                    {/* Só mostra "in the making" se for o último capítulo */}
+                    {chapterIndex === chapters.length - 1 && (
+                      <div className="comic-next-text">Chapter {chapterIndex + 2} in the making...</div>
+                    )}
+                  </div>
                 </div>
               ))}
             </div>
