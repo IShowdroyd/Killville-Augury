@@ -110,7 +110,7 @@ const App = () => {
                 id="access-key"
                 type="password"
                 value={input}
-                onChange={(e) => setInput(e.target.value || "")}
+                onChange={(e) => setInput(e.target.value ?? "")}
                 placeholder="Access Key"
                 autoFocus
               />
