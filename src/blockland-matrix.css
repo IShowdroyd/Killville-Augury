@@ -310,7 +310,12 @@ summary,
 [role='button'],
 [role='link'],
 .clicavel {
-  cursor: url('/RHand.png'), pointer !important;
+  cursor: pointer !important;
+}
+
+.poster-img,
+.poster-img:hover {
+  cursor: zoom-in !important;
 }
 
 /* Bagunça de rotação individual (troque/adicione quantas quiser) */
@@ -1011,5 +1016,6 @@ summary,
   letter-spacing: 1px;
   margin-top: 20px;
 }
+
 
 
