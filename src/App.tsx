@@ -127,7 +127,7 @@ const App = () => {
   }
 
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/Killville-Augury">
       <Routes>
         <Route path="/" element={
           <>
