@@ -2,6 +2,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Gidugu&display=swap');
 
+body,
+html {
+  cursor: url('/CUR_3darrow.png') 0 0, auto !important;
+}
+
 /* --- LOGIN (tela de key) --- */
 .bl-bg-matrix {
   min-height: 100vh;
@@ -173,7 +178,7 @@ html {
 
 body,
 html {
-  cursor: auto !important;
+  cursor: url('/CUR_3darrow.png'), auto !important;
 }
 
 /* Específico para a área vazia abaixo da navbar */
@@ -304,7 +309,7 @@ summary,
 [role='button'],
 [role='link'],
 .clicavel {
-  cursor: pointer !important;
+  cursor: url('/RHand.png'), pointer !important;
 }
 
 /* Bagunça de rotação individual (troque/adicione quantas quiser) */
@@ -704,44 +709,14 @@ summary,
   }
 }
 
-/* CURSORES CUSTOMIZADOS */
-body,
-html,
-* {
-  cursor: url("/CUR_3darrow.png"), auto !important;
-}
 
-button,
-a,
-input[type='button'],
-input[type='submit'],
-input[type='password'],
-input[type='text'],
-input[type='email'],
-input[type='search'],
-input[type='number'],
-textarea,
-label,
-select,
-summary,
-[tabindex],
-[role='button'],
-[role='link'],
-.clicavel,
-.navbar-meet,
-.navbar-comic,
-.comic-augury-btn,
-.comic-chapters-button-static,
-.comic-chapter-title,
-.comic-page-button,
-.comic-back-btn,
-.comic-nav-btn {
-  cursor: url("/RHand.png"), pointer !important;
-}
 
+/* Cursor de lupa */
 .poster-img,
 .poster-img:hover {
-  cursor: url("data:image/svg+xml;utf8,<svg width='32' height='32' xmlns='http://www.w3.org/2000/svg'><circle cx='13' cy='13' r='10' stroke='black' stroke-width='2.5' fill='white' /><rect x='20' y='20' width='8' height='4' rx='2' fill='white' stroke='black' stroke-width='2.5' transform='rotate(45 24 22)' /></svg>") 9 9, zoom-in !important;
+  cursor: url("data:image/svg+xml;utf8,<svg width='32' height='32' xmlns='http://www.w3.org/2000/svg'><circle cx='13' cy='13' r='10' stroke='black' stroke-width='2.5' fill='white' /><rect x='20' y='20' width='8' height='4' rx='2' fill='white' stroke='black' stroke-width='2.5' transform='rotate(45 24 22)' /></svg>")
+      9 9,
+    zoom-in;
 }
 
 /* ========== PÁGINA INDIVIDUAL DO COMIC ========== */
