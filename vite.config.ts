@@ -6,6 +6,9 @@ export default defineConfig({
   base: process.env.NODE_ENV === 'production' ? '/Killville-Augury/' : '/',
   build: {
     outDir: 'dist',
-    assetsDir: 'assets'
+    assetsDir: 'assets',
+    rollupOptions: {
+      input: './index.html'
+    }
   }
 })
