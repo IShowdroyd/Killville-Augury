@@ -311,7 +311,9 @@ summary,
 .comic-augury-btn,
 .comic-chapters-button-static,
 .comic-chapter-title,
-.comic-page-button,
+.comic-page-button {
+  font-family: 'Courier New', monospace; /* ESTES MANTÊM */
+}
 .comic-back-btn,
 .comic-nav-btn {
   cursor: pointer;
@@ -390,7 +392,7 @@ summary,
   background: #000;
   color: #fff;
   min-height: 100vh;
-  font-family: 'Courier New', monospace;
+  font-family: 'Bodoni Moda', serif; /* CORRIGIDO! */
   padding-top: 68px;
 }
 
@@ -433,9 +435,9 @@ summary,
   transform: translateX(-50%);
   font-size: 1.5rem;
   font-weight: bold;
-  color: #ffffff;
+  color: #ffffff !important;
   margin: 0;
-  font-family: 'Bodoni Moda', serif;
+  font-family: 'Bodoni Moda', serif; /* JÁ ESTAVA CERTO */
   letter-spacing: 1.5px;
 }
 
@@ -460,13 +462,13 @@ summary,
 }
 
 .comic-chapters-button-static {
-  background: #333;
+  background: linear-gradient(145deg, #444, #333);
   color: #fff;
-  border: 2px solid #666;
-  padding: 18px 36px;
+  border: 3px solid #777;
+  padding: 20px 50px;
   font-size: 22px;
   font-weight: bold;
-  font-family: 'Bodoni Moda', serif;
+  font-family: 'Bodoni Moda', serif; /* JÁ ESTAVA CERTO */
   cursor: pointer;
   transition: all 0.3s ease;
   border-radius: 8px;
@@ -579,7 +581,8 @@ summary,
 }
 
 .comic-page-img {
-  max-width: 100%;
+  max-width: 800px; /* TAMANHO LIMITADO */
+  width: 100%;
   height: auto;
   box-shadow: 0 8px 40px rgba(0,0,0,0.7);
   border-radius: 4px;
@@ -719,10 +722,9 @@ summary,
 /* Separador entre capítulos */
 .comic-chapter-separator {
   text-align: center;
-  margin: 120px 0 100px 0;
-  padding: 40px 20px;
-  border-top: 2px solid #444;
-  border-bottom: 2px solid #444;
+  padding: 40px 0;
+  color: #666;
+  font-family: 'Bodoni Moda', serif; /* CORRIGIDO! Era Courier New */
 }
 
 .comic-end-text {
@@ -742,3 +744,4 @@ summary,
   letter-spacing: 1px;
   margin-top: 20px;
 }
+
