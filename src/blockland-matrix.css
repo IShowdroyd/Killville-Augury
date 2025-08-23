@@ -291,28 +291,6 @@ html {
   position: absolute;
 }
 
-button,
-a,
-input[type='button'],
-input[type='submit'],
-input[type='password'],
-input[type='text'],
-input[type='email'],
-input[type='search'],
-input[type='number'],
-textarea,
-label,
-select,
-summary,
-.poster-img,
-.poster-youtube,
-[tabindex],
-[role='button'],
-[role='link'],
-.clicavel {
-  cursor: pointer !important;
-}
-
 .poster-img,
 .poster-img:hover {
   cursor: zoom-in !important;
@@ -1016,6 +994,7 @@ summary,
   letter-spacing: 1px;
   margin-top: 20px;
 }
+
 
 
 
