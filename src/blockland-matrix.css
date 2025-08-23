@@ -2,15 +2,65 @@
 @import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Gidugu&display=swap');
 
-/* --- RESET BÁSICO --- */
-html, body {
-  background: #000;
-  margin: 0;
-  padding: 0;
-  overflow-x: hidden;
+/* --- LOGIN (tela de key) --- */
+.bl-bg-matrix {
+  min-height: 100vh;
+  width: 100vw;
+  background: #191b1f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.bl-login-window-matrix {
+  min-width: 400px;
+  border: 2px solid #6aff66;
+  border-radius: 13px;
+  box-shadow: 0 0 14px 0 #44ff2a99, 0 4px 36px #000a;
+  background: #222326;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+}
+.bl-title-bar-matrix {
+  background: #252a21;
+  color: #caffc0;
+  padding: 17px 24px 13px 24px;
+  font-family: 'Share Tech Mono', 'Fira Mono', 'JetBrains Mono', 'Bodoni Moda',
+    serif;
+  font-size: 1.33rem;
+  letter-spacing: 1.6px;
+  font-weight: 700;
+  border-bottom: 1.5px solid #6aff66;
+  box-shadow: 0 2px 0 #222, 0 2px 8px #161c;
+  text-shadow: 0 1.5px 8px #5bff1855;
+}
+.bl-login-content-matrix {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  padding: 34px 32px 34px 32px;
+  background: #191b1f;
+  justify-content: flex-start;
+}
+.bl-label-matrix,
+.bl-input-matrix,
+.bl-btn-matrix {
+  font-family: 'Share Tech Mono', 'Fira Mono', 'JetBrains Mono', 'Bodoni Moda',
+    serif;
+}
+.bl-form-matrix {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+}
+.bl-btn-matrix {
+  width: 100%;
 }
 
-/* --- NAVBAR --- */
+/* --- NAVBAR PRINCIPAL, 100% CENTRALIZADA --- */
 .custom-navbar {
   position: fixed;
   top: 0;
@@ -21,91 +71,171 @@ html, body {
   display: flex;
   align-items: center;
   z-index: 100;
+  box-shadow: none;
+  border-bottom: none;
+  padding: 0;
 }
 
+/* Espaço nas laterais AUTOMÁTICO! */
 .navbar-left {
-  flex: 1;
+  min-width: 0;
+  flex: 1 1 0%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  /* Ajuste conforme desejar para afastar o texto da borda */
   padding-left: 32px;
 }
-
 .navbar-right {
-  flex: 1;
+  min-width: 0;
+  flex: 1 1 0%;
   display: flex;
+  align-items: center;
   justify-content: flex-end;
   padding-right: 48px;
 }
-
 .navbar-center {
+  flex: 0 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+}
+
+/* Centro em bloco (duas linhas) */
+.navbar-augury-block {
   display: flex;
   flex-direction: column;
   align-items: center;
+  line-height: 1.05;
 }
-
-.navbar-augury-thisis, .navbar-augury-main {
+.navbar-augury-thisis {
   font-family: 'Bodoni Moda', serif;
   color: #fff;
-  margin: 0;
+  font-size: 1rem;
+  font-weight: 400;
+  letter-spacing: 0.7px;
+  margin-bottom: -2px;
+  margin-top: 2px;
 }
-
+.navbar-augury-main {
+  font-family: 'Bodoni Moda', serif;
+  color: #ececec;
+  font-size: 1.6rem;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  line-height: 1;
+}
 .navbar-meet {
   font-family: 'Gidugu', Arial, sans-serif;
   color: #992727;
   font-size: 1.7rem;
+  cursor: pointer;
+  letter-spacing: 1px;
+  user-select: none;
+  text-transform: uppercase;
+  text-decoration: none;
   background: none;
   border: none;
-  cursor: pointer;
+  transition: text-shadow 0.18s;
 }
-
+.navbar-meet:hover {
+  text-shadow: 0 2px 8px #99272788;
+}
 .navbar-comic {
   font-family: 'Bodoni Moda', serif;
   color: #ececec;
   font-size: 1.25rem;
   cursor: pointer;
+  letter-spacing: 1px;
+  user-select: none;
+  transition: color 0.18s;
+}
+.navbar-comic:hover {
+  color: #7aff70;
 }
 
-/* --- POSTERS --- */
+html,
+body,
+.main-bg-matrix {
+  background: #000 !important;
+  min-height: 100vh;
+  width: 100vw;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body,
+html {
+  overflow-x: hidden !important;
+}
+
+body,
+html {
+  cursor: auto !important;
+}
+
+/* Específico para a área vazia abaixo da navbar */
+.main-empty-bg {
+  background: transparent;
+  margin: 0;
+  padding: 0;
+  min-height: unset; /* REMOVE min-height */
+  width: unset; /* REMOVE width */
+  overflow: visible;
+}
+
 .posters-wall-outer {
   display: flex;
   justify-content: center;
-  min-height: calc(100vh - 70px);
+  min-height: calc(100vh - 70px); /* Considerando a barra superior */
   width: 100vw;
+  position: relative;
   background: #000;
-  padding-bottom: 60px;
+  padding-bottom: 60px; /* Espaço no fim da tela */
+  box-sizing: border-box;
+}
+
+.posters-wall-wrapper {
+  width: 100vw;
+  min-height: 2200px; /* ou maior conforme necessidade */
+  overflow: visible;
+  display: flex;
+  justify-content: center;
 }
 
 .posters-wall {
   position: relative;
   width: 1200px;
   min-height: 2100px;
-  margin: 90px auto 120px auto;
+  margin: 90px auto 120px auto; /* CENTRALIZADO */
+  background: transparent;
+  overflow: visible;
+  transform-origin: top center;
 }
 
 .poster-img {
   position: absolute;
+  filter: drop-shadow(0 2px 10px #000b) drop-shadow(0 0px 1px rgb(0, 0, 0));
+  background: none;
+  border: none;
+  padding: 0;
   cursor: zoom-in;
-  transition: transform 0.15s;
+  transition: transform 0.15s cubic-bezier(0.6, -0.23, 0.59, 1.5), filter 0.22s;
   z-index: 2;
+  border-radius: 0 !important;
+  outline: none;
+  user-select: none;
 }
 
 .poster-img:hover {
-  transform: scale(1.06);
+  transform: scale(1.06) rotate(var(--poster-rotate, 0deg));
   z-index: 9;
+  filter: drop-shadow(0 18px 45px #000c);
+  cursor: zoom-in;
 }
 
-/* Posições individuais dos posters */
-.poster-img-0 { left: 725px; top: 1527px; width: 307px; transform: rotate(5deg); }
-.poster-img-1 { left: 426px; top: 1521px; width: 307px; transform: rotate(-8deg); }
-.poster-img-2 { left: 124px; top: 1581px; width: 307px; transform: rotate(-18deg); }
-.poster-img-3 { left: 715px; top: 1196px; width: 314px; transform: rotate(-6deg); }
-.poster-img-4 { left: 440px; top: 1195px; width: 330px; transform: rotate(3deg); }
-.poster-img-5 { left: 120px; top: 1180px; width: 330px; transform: rotate(12deg); }
-.poster-img-7 { left: 600px; top: 810px; width: 335px; transform: rotate(-8deg); }
-.poster-img-8 { left: 270px; top: 830px; width: 335px; transform: rotate(7deg); }
-.poster-img-9 { left: 730px; top: 495px; width: 340px; transform: rotate(14deg); }
-.poster-img-10 { left: 130px; top: 495px; width: 340px; transform: rotate(-10deg); }
-.poster-img-11 { left: 370px; top: 350px; width: 340px; transform: rotate(9deg); }
-
-/* --- LIGHTBOX --- */
 .lightbox-overlay {
   position: fixed;
   inset: 0;
@@ -115,15 +245,183 @@ html, body {
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  animation: fadeIn 0.3s;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .lightbox-img {
   max-width: 92vw;
   max-height: 92vh;
+  filter: drop-shadow(0 18px 90px #000b) drop-shadow(0 2px 28px #000c);
+  border-radius: 0 !important;
+  background: none;
+  margin: 0;
+  display: block;
+  cursor: pointer;
+  object-fit: contain;
+  pointer-events: auto;
+  transition: filter 0.2s;
+}
+
+.poster-youtube {
+  background: none;
+  box-shadow: drop-shadow(0 2px 10px #000b) drop-shadow(0 0px 1px rgb(0, 0, 0));
+  border-radius: 0 !important;
+  transition: transform 0.15s cubic-bezier(0.6, -0.23, 0.59, 1.5),
+    box-shadow 0.2s;
+  pointer-events: auto;
+  object-fit: cover;
+  position: absolute;
+}
+
+/* CURSORES CUSTOMIZADOS - VERSÃO SIMPLES */
+body,
+html,
+* {
+  cursor: auto;
+}
+
+button,
+a,
+input[type='button'],
+input[type='submit'],
+input[type='password'],
+input[type='text'],
+input[type='email'],
+input[type='search'],
+input[type='number'],
+textarea,
+label,
+select,
+summary,
+[tabindex],
+[role='button'],
+[role='link'],
+.clicavel,
+.navbar-meet,
+.navbar-comic,
+.comic-augury-btn,
+.comic-chapters-button-static,
+.comic-chapter-title,
+.comic-page-button,
+.comic-back-btn,
+.comic-nav-btn {
   cursor: pointer;
 }
 
-/* --- COMIC STYLES --- */
+/* Bagunça de rotação individual (troque/adicione quantas quiser) */
+.poster-img-0 {
+  left: 725px;
+  top: 1527.003px;
+  width: 307px;
+  transform: rotate(5deg);
+}
+.poster-img-1 {
+  left: 426px;
+  top: 1520.996px;
+  width: 307px;
+  transform: rotate(-8deg);
+}
+.poster-img-2 {
+  left: 124.001px;
+  top: 1580.928px;
+  width: 307px;
+  transform: rotate(-18deg);
+}
+.poster-img-3 {
+  left: 715px;
+  top: 1195.993px;
+  width: 314px;
+  transform: rotate(-6deg);
+}
+.poster-img-4 {
+  left: 439.784px;
+  top: 1195.001px;
+  width: 330px;
+  transform: rotate(3deg);
+}
+.poster-img-5 {
+  left: 120px;
+  top: 1180.001px;
+  width: 330px;
+  transform: rotate(12deg);
+}
+.poster-img-7 {
+  left: 600px;
+  top: 810px;
+  width: 335px;
+  transform: rotate(-8deg);
+}
+.poster-img-8 {
+  left: 270px;
+  top: 830px;
+  width: 335px;
+  transform: rotate(7deg);
+}
+.poster-img-9 {
+  left: 730px;
+  top: 495px;
+  width: 340px;
+  transform: rotate(14deg);
+}
+.poster-img-10 {
+  left: 130px;
+  top: 495px;
+  width: 340px;
+  transform: rotate(-10deg);
+}
+.poster-img-11 {
+  left: 370px;
+  top: 350px;
+  width: 340px;
+  transform: rotate(9deg);
+}
+
+/* Lightbox */
+.poster-lightbox {
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  cursor: zoom-out;
+}
+.poster-lightbox-img {
+  max-width: 92vw;
+  max-height: 86vh;
+  box-shadow: 0 16px 90px #000b, 0 2px 28px #000c;
+  border-radius: 0;
+  margin: 0;
+  pointer-events: auto;
+  object-fit: contain;
+}
+@keyframes popZoomIn {
+  from {
+    transform: scale(0.6) rotate(-3deg);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+/* COMIC STYLES - RESTO DO CSS COMPLETO */
 .comic-container {
   background: #000;
   color: #fff;
@@ -144,6 +442,25 @@ html, body {
   align-items: center;
   z-index: 100;
   padding: 0 20px;
+  box-sizing: border-box;
+}
+
+.comic-augury-btn {
+  background: #333;
+  color: #fff;
+  border: 2px solid #666;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: bold;
+  font-family: 'Courier New', monospace;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  justify-self: start;
+}
+
+.comic-augury-btn:hover {
+  background: #555;
+  border-color: #888;
 }
 
 .comic-title {
@@ -155,19 +472,203 @@ html, body {
   color: #ffffff;
   margin: 0;
   font-family: 'Bodoni Moda', serif;
+  letter-spacing: 1.5px;
 }
 
-/* Botões básicos */
-button, .comic-augury-btn, .comic-chapters-button-static {
+.comic-header-spacer {
+  justify-self: end;
+}
+
+.comic-chapters-static {
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 60px 0;
+  background: #000;
+}
+
+.comic-chapters-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.comic-chapters-button-static {
   background: #333;
   color: #fff;
   border: 2px solid #666;
-  padding: 10px 20px;
-  font-family: 'Courier New', monospace;
+  padding: 18px 36px;
+  font-size: 22px;
+  font-weight: bold;
+  font-family: 'Bodoni Moda', serif;
   cursor: pointer;
+  transition: all 0.3s ease;
+  border-radius: 8px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  position: relative;
+  overflow: hidden;
 }
 
-button:hover, .comic-augury-btn:hover, .comic-chapters-button-static:hover {
+.comic-chapters-button-static:hover {
   background: #555;
   border-color: #888;
+}
+
+.comic-chapters-dropdown-static {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #222;
+  border: 2px solid #666;
+  min-width: 300px;
+  max-height: 400px;
+  overflow-y: auto;
+  z-index: 1000;
+}
+
+.comic-chapter-item {
+  position: relative;
+  border-bottom: 1px solid #444;
+}
+
+.comic-chapter-title {
+  width: 100%;
+  background: transparent;
+  color: #fff;
+  border: none;
+  padding: 12px 20px;
+  font-size: 14px;
+  font-family: 'Courier New', monospace;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.3s ease;
+}
+
+.comic-chapter-title:hover {
+  background: #333;
+}
+
+.comic-pages-submenu {
+  position: absolute;
+  left: 100%;
+  top: 0;
+  background: #333;
+  border: 1px solid #666;
+  min-width: 200px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  padding: 10px;
+  z-index: 1001;
+}
+
+.comic-page-button {
+  background: #444;
+  color: #fff;
+  border: 1px solid #666;
+  padding: 8px 12px;
+  font-size: 12px;
+  font-family: 'Courier New', monospace;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.comic-page-button:hover {
+  background: #555;
+}
+
+.comic-no-chapters {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: calc(100vh - 200px);
+  text-align: center;
+}
+
+.comic-no-chapters h2 {
+  font-size: 2.5rem;
+  color: #ffffff;
+  margin: 0;
+  font-family: 'Bodoni Moda', serif;
+  letter-spacing: 1.5px;
+}
+
+.comic-pages-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 20px;
+}
+
+.comic-page-wrapper {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.comic-page-image {
+  max-width: 100%;
+  height: auto;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+}
+
+.comic-chapter-separator {
+  text-align: center;
+  padding: 40px 0;
+  color: #666;
+  font-family: 'Courier New', monospace;
+}
+
+.comic-end-text, .comic-next-text {
+  font-size: 18px;
+  margin: 10px 0;
+}
+
+.comic-separator-line {
+  font-size: 24px;
+  margin: 20px 0;
+  color: #444;
+}
+
+.comic-back-to-top {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(145deg, #444, #333);
+  color: #fff;
+  border: 3px solid #666;
+  font-family: 'Bodoni Moda', serif;
+  font-size: 24px;
+  font-weight: bold;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  opacity: 0;
+  visibility: hidden;
+}
+
+.comic-back-to-top.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.comic-back-to-top:hover {
+  background: linear-gradient(145deg, #555, #444);
+  color: #fff;
+  transform: scale(1.1) translateY(-3px);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.6);
 }
