@@ -173,7 +173,7 @@ html {
 
 body,
 html {
-  cursor: auto !important;
+  cursor: url('/CUR_3darow.png'), auto !important;
 }
 
 /* Específico para a área vazia abaixo da navbar */
@@ -217,6 +217,7 @@ html {
 
 .poster-img {
   position: absolute;
+  /* box-shadow: 0 5px 30px 2px rgba(0,0,0,0.75), 0 0 1px #111; REMOVIDO! */
   filter: drop-shadow(0 2px 10px #000b) drop-shadow(0 0px 1px rgb(0, 0, 0));
   background: none;
   border: none;
@@ -232,6 +233,7 @@ html {
 .poster-img:hover {
   transform: scale(1.06) rotate(var(--poster-rotate, 0deg));
   z-index: 9;
+  /* box-shadow: 0 10px 35px 12px rgba(0,0,0,0.85); REMOVIDO! */
   filter: drop-shadow(0 18px 45px #000c);
   cursor: zoom-in;
 }
@@ -260,6 +262,7 @@ html {
 .lightbox-img {
   max-width: 92vw;
   max-height: 92vh;
+  /* box-shadow: 0 8px 64px 2px rgba(0,0,0,0.8), 0 0 2px #222; REMOVIDO! */
   filter: drop-shadow(0 18px 90px #000b) drop-shadow(0 2px 28px #000c);
   border-radius: 0 !important;
   background: none;
@@ -282,13 +285,6 @@ html {
   position: absolute;
 }
 
-/* CURSORES CUSTOMIZADOS - VERSÃO SIMPLES */
-body,
-html,
-* {
-  cursor: auto;
-}
-
 button,
 a,
 input[type='button'],
@@ -302,21 +298,13 @@ textarea,
 label,
 select,
 summary,
+.poster-img,
+.poster-youtube,
 [tabindex],
 [role='button'],
 [role='link'],
-.clicavel,
-.navbar-meet,
-.navbar-comic,
-.comic-augury-btn,
-.comic-chapters-button-static,
-.comic-chapter-title,
-.comic-page-button {
-  font-family: 'Courier New', monospace; /* ESTES MANTÊM */
-}
-.comic-back-btn,
-.comic-nav-btn {
-  cursor: pointer;
+.clicavel {
+  cursor: url('/RHand.png'), pointer !important;
 }
 
 /* Bagunça de rotação individual (troque/adicione quantas quiser) */
@@ -387,15 +375,52 @@ summary,
   transform: rotate(9deg);
 }
 
-/* --- COMIC STYLES COMPLETOS --- */
+/* Lightbox */
+.poster-lightbox {
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  cursor: zoom-out;
+}
+.poster-lightbox-img {
+  max-width: 92vw;
+  max-height: 86vh;
+  box-shadow: 0 16px 90px #000b, 0 2px 28px #000c;
+  border-radius: 0;
+  margin: 0;
+  pointer-events: auto;
+  object-fit: contain;
+}
+@keyframes popZoomIn {
+  from {
+    transform: scale(0.6) rotate(-3deg);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+/* COMIC STYLES - CORREÇÕES */
 .comic-container {
   background: #000;
   color: #fff;
   min-height: 100vh;
-  font-family: 'Bodoni Moda', serif; /* CORRIGIDO! */
-  padding-top: 68px;
+  font-family: 'Courier New', monospace;
+  padding-top: 68px; /* Compensa a altura da navbar */
 }
 
+/* BARRA SUPERIOR DO COMIC */
 .comic-header {
   position: fixed;
   top: 0;
@@ -435,9 +460,9 @@ summary,
   transform: translateX(-50%);
   font-size: 1.5rem;
   font-weight: bold;
-  color: #ffffff !important;
+  color: #ffffff !important; /* Mudou de verde para branco */
   margin: 0;
-  font-family: 'Bodoni Moda', serif; /* JÁ ESTAVA CERTO */
+  font-family: 'Bodoni Moda', serif;
   letter-spacing: 1.5px;
 }
 
@@ -445,11 +470,12 @@ summary,
   justify-self: end;
 }
 
+/* CENTRALIZAÇÃO DO CONTEÚDO */
 .comic-chapters-static {
   width: 100vw;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
   padding: 60px 0;
   background: #000;
 }
@@ -461,14 +487,38 @@ summary,
   align-items: center;
 }
 
+/* ADICIONE estas animações para o botão CHAPTERS: */
+.comic-chapters-button-static::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+  transition: left 0.5s;
+}
+
+.comic-chapters-button-static:hover::before {
+  left: 100%;
+}
+
+.comic-chapters-button-static:hover {
+  background: linear-gradient(145deg, #555, #444);
+  border-color: #999;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+}
+
+
 .comic-chapters-button-static {
   background: linear-gradient(145deg, #444, #333);
   color: #fff;
   border: 3px solid #777;
-  padding: 20px 50px;
-  font-size: 22px;
+  padding: 20px 50px; /* Maior */
+  font-size: 22px; /* Maior */
   font-weight: bold;
-  font-family: 'Bodoni Moda', serif; /* JÁ ESTAVA CERTO */
+  font-family: 'Bodoni Moda', serif;
   cursor: pointer;
   transition: all 0.3s ease;
   border-radius: 8px;
@@ -548,6 +598,7 @@ summary,
   background: #555;
 }
 
+/* MENSAGEM CENTRALIZADA */
 .comic-no-chapters {
   display: flex;
   flex-direction: column;
@@ -559,12 +610,13 @@ summary,
 
 .comic-no-chapters h2 {
   font-size: 2.5rem;
-  color: #ffffff;
+  color: #ffffff !important; /* Mudou de verde para branco */
   margin: 0;
   font-family: 'Bodoni Moda', serif;
   letter-spacing: 1.5px;
 }
 
+/* PÁGINAS DO COMIC */
 .comic-pages-container {
   display: flex;
   flex-direction: column;
@@ -573,14 +625,224 @@ summary,
   padding: 20px;
 }
 
+.comic-page-wrapper {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.comic-page-image {
+  max-width: 100%;
+  height: auto;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+}
+
+.comic-chapter-separator {
+  text-align: center;
+  padding: 40px 0;
+  color: #666;
+  font-family: 'Courier New', monospace;
+}
+
+.comic-end-text, .comic-next-text {
+  font-size: 18px;
+  margin: 10px 0;
+}
+
+.comic-separator-line {
+  font-size: 24px;
+  margin: 20px 0;
+  color: #444;
+}
+
+/* BOTÃO VOLTAR AO TOPO */
+/* BOTÃO VOLTAR AO TOPO */
+.comic-back-to-top {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(145deg, #444, #333);
+  color: #fff;
+  border: 3px solid #666;
+  font-family: 'Bodoni Moda', serif;
+  font-size: 24px;
+  font-weight: bold;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  opacity: 0;
+  visibility: hidden;
+}
+
+.comic-back-to-top.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.comic-back-to-top:hover {
+  background: linear-gradient(145deg, #555, #444);
+  color: #fff;
+  transform: scale(1.1) translateY(-3px);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+}
+
+/* Para telas menores */
+@media (max-width: 768px) {
+  .comic-back-to-top {
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
+    bottom: 20px;
+    right: 20px;
+  }
+}
+
+
+
+/* Cursor de lupa */
+.poster-img,
+.poster-img:hover {
+  cursor: url("data:image/svg+xml;utf8,<svg width='32' height='32' xmlns='http://www.w3.org/2000/svg'><circle cx='13' cy='13' r='10' stroke='black' stroke-width='2.5' fill='white' /><rect x='20' y='20' width='8' height='4' rx='2' fill='white' stroke='black' stroke-width='2.5' transform='rotate(45 24 22)' /></svg>")
+      9 9,
+    zoom-in;
+}
+
+/* ========== PÁGINA INDIVIDUAL DO COMIC ========== */
+.comic-page-container {
+  background: #000;
+  color: #fff;
+  min-height: 100vh;
+  font-family: 'Courier New', monospace;
+  padding-top: 68px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* HEADER DA PÁGINA INDIVIDUAL */
+.comic-page-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 68px;
+  background: #141614;
+  display: grid;
+  grid-template-columns: 200px 1fr 200px;
+  align-items: center;
+  z-index: 100;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+
+.comic-back-btn {
+  background: #333;
+  color: #fff;
+  border: 2px solid #666;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: bold;
+  font-family: 'Courier New', monospace;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  justify-self: start;
+  text-decoration: none;
+}
+
+.comic-back-btn:hover {
+  background: #555;
+  border-color: #888;
+  color: #fff;
+  text-decoration: none;
+}
+
+.comic-page-title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #ffffff;
+  margin: 0;
+  font-family: 'Bodoni Moda', serif;
+  letter-spacing: 1.2px;
+  text-align: center;
+}
+
+/* CONTEÚDO DA PÁGINA */
+.comic-page-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px;
+  max-width: 1000px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.comic-page-images {
+  display: flex;
+  flex-direction: column;
+  gap: 60px; /* Espaço maior entre páginas */
+  width: 100%;
+  align-items: center;
+}
+
+/* Título do capítulo */
+.chapter-title {
+  font-family: 'Bodoni Moda', serif;
+  font-size: 3rem;
+  font-weight: 700;
+  color: #fff;
+  text-align: center;
+  margin: 80px 0 60px 0;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  border-bottom: 2px solid #444;
+  padding-bottom: 20px;
+}
+
+/* Fim do capítulo */
+.chapter-end {
+  text-align: center;
+  margin: 120px 0 80px 0;
+  padding: 40px 20px;
+  border-top: 2px solid #444;
+  border-bottom: 2px solid #444;
+}
+
+.chapter-end-title {
+  font-family: 'Bodoni Moda', serif;
+  font-size: 2rem;
+  color: #ccc;
+  margin-bottom: 20px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.chapter-next {
+  font-family: 'Bodoni Moda', serif;
+  font-size: 1.5rem;
+  color: #888;
+  font-style: italic;
+  letter-spacing: 1px;
+}
+
+
 .comic-page-img {
-  max-width: 70%; /* REDUZIDO EM 70% */
+  max-width: 100%;
   height: auto;
   box-shadow: 0 8px 40px rgba(0,0,0,0.7);
   border-radius: 4px;
   cursor: pointer;
   transition: transform 0.3s ease;
-  display: block;
 }
 
 .comic-page-img:hover {
@@ -712,12 +974,18 @@ summary,
   padding-bottom: 20px;
 }
 
-/* Separador entre capítulos */
+/* Espaçamento entre páginas */
+.comic-page-wrapper {
+  margin-bottom: 60px; /* Espaço maior entre páginas */
+}
+
+/* Separador já existe, mas vamos melhorar */
 .comic-chapter-separator {
   text-align: center;
-  padding: 40px 0;
-  color: #666;
-  font-family: 'Bodoni Moda', serif; /* CORRIGIDO! Era Courier New */
+  margin: 120px 0 100px 0; /* Espaço maior */
+  padding: 40px 20px;
+  border-top: 2px solid #444;
+  border-bottom: 2px solid #444;
 }
 
 .comic-end-text {
@@ -737,5 +1005,3 @@ summary,
   letter-spacing: 1px;
   margin-top: 20px;
 }
-
-
