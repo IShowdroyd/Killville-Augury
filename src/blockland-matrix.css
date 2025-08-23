@@ -171,11 +171,6 @@ html {
   overflow-x: hidden !important;
 }
 
-body,
-html {
-  cursor: url('/CUR_3darow.png'), auto !important;
-}
-
 /* Específico para a área vazia abaixo da navbar */
 .main-empty-bg {
   background: transparent;
@@ -1005,3 +1000,4 @@ summary,
   letter-spacing: 1px;
   margin-top: 20px;
 }
+
