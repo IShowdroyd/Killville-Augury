@@ -573,21 +573,27 @@ summary,
   padding: 20px;
 }
 
+/* CONTAINER DAS PÁGINAS - GARANTIA EXTRA DE CENTRALIZAÇÃO */
 .comic-page-wrapper {
   display: flex;
-  justify-content: center;
+  justify-content: center; /* FORÇA CENTRO */
+  align-items: center;
   width: 100%;
   margin-bottom: 60px;
+  padding: 0 20px; /* Margem de segurança nas laterais */
+  box-sizing: border-box;
 }
 
 .comic-page-img {
-  max-width: 800px; /* TAMANHO LIMITADO */
-  width: 100%;
+  max-width: 70%; /* REDUZIDO EM 70% */
+  width: 70%; /* FORÇA 70% */
   height: auto;
   box-shadow: 0 8px 40px rgba(0,0,0,0.7);
   border-radius: 4px;
   cursor: pointer;
   transition: transform 0.3s ease;
+  display: block;
+  margin: 0 auto; /* CENTRALIZA PERFEITAMENTE */
 }
 
 .comic-page-img:hover {
@@ -744,4 +750,5 @@ summary,
   letter-spacing: 1px;
   margin-top: 20px;
 }
+
 
