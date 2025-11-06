@@ -25,7 +25,7 @@ export async function getAllChapters(): Promise<Chapter[]> {
     const chapters: Chapter[] = []
     
     // 🧪 TESTE: Vamos tentar URLs diretas e ver se as imagens existem
-    for (let chapterNum = 1; chapterNum <= 5; chapterNum++) {
+    for (let chapterNum = 1; chapterNum <= 6; chapterNum++) {
       console.log(`📖 Testando capítulo ${chapterNum}...`)
       
       const chapterPages: ComicPage[] = []
@@ -73,4 +73,5 @@ export async function getAllChapters(): Promise<Chapter[]> {
     console.error('💥 Erro:', error)
     return []
   }
+
 }
