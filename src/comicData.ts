@@ -18,81 +18,60 @@ export interface Chapter {
   pages: ComicPage[]
 }
 
-async function checkPagesInBatch(chapterNum: number, startPage: number, batchSize: number): Promise<ComicPage[]> {
-  const promises = Array.from({ length: batchSize }, async (_, i) => {
-    const pageNum = startPage + i
-    const { data: urlData } = supabase.storage
-      .from('comic')
-      .getPublicUrl(`chapters/${chapterNum}/p${pageNum}.jpg`)
-
-    try {
-      const response = await fetch(urlData.publicUrl, { method: 'HEAD' })
-      if (response.ok) {
-        return {
-          pageNumber: pageNum,
-          imageUrl: urlData.publicUrl,
-          chapterNumber: chapterNum
-        }
-      }
-    } catch {
-      return null
-    }
-    return null
-  })
-
-  const results = await Promise.all(promises)
-  return results.filter(page => page !== null) as ComicPage[]
-}
-
 export async function getAllChapters(): Promise<Chapter[]> {
   try {
-    console.log('🚀 Carregando capítulos em lotes...')
-
+    console.log('🚀 Testando URLs diretas...')
+    
     const chapters: Chapter[] = []
-
-    for (let chapterNum = 1; chapterNum <= 10; chapterNum++) {
+    
+    // 🧪 TESTE: Vamos tentar URLs diretas e ver se as imagens existem
+    for (let chapterNum = 1; chapterNum <= 6; chapterNum++) {
       console.log(`📖 Testando capítulo ${chapterNum}...`)
-
-      const allPages: ComicPage[] = []
-      let currentPage = 1
-      const batchSize = 10 // Testa 10 páginas por vez
-
-      // Carrega em lotes de 10 até não encontrar mais páginas
-      while (currentPage <= 50) {
-        const batch = await checkPagesInBatch(chapterNum, currentPage, batchSize)
-
-        if (batch.length === 0) {
-          break // Não encontrou mais páginas
-        }
-
-        allPages.push(...batch)
-        currentPage += batchSize
-
-        // Se encontrou menos que o lote completo, provavelmente acabaram as páginas
-        if (batch.length < batchSize) {
+      
+      const chapterPages: ComicPage[] = []
+      
+      // Tenta até 20 páginas por capítulo
+      for (let pageNum = 1; pageNum <= 50; pageNum++) {
+        const { data: urlData } = supabase.storage
+          .from('comic')
+          .getPublicUrl(`chapters/${chapterNum}/p${pageNum}.jpg`)
+        
+        // 🔍 Testa se a URL da imagem realmente existe
+        try {
+          const response = await fetch(urlData.publicUrl, { method: 'HEAD' })
+          if (response.ok) {
+            console.log(`✅ Encontrada: chapters/${chapterNum}/p${pageNum}.jpg`)
+            chapterPages.push({
+              pageNumber: pageNum,
+              imageUrl: urlData.publicUrl,
+              chapterNumber: chapterNum
+            })
+          } else {
+            console.log(`❌ Não encontrada: chapters/${chapterNum}/p${pageNum}.jpg`)
+            break // Para de procurar páginas neste capítulo
+          }
+        } catch (error) {
+          console.log(`❌ Erro ao testar: chapters/${chapterNum}/p${pageNum}.jpg`)
           break
         }
       }
-
-      if (allPages.length > 0) {
-        allPages.sort((a, b) => a.pageNumber - b.pageNumber)
+      
+      if (chapterPages.length > 0) {
         chapters.push({
           chapterNumber: chapterNum,
           title: `Chapter ${chapterNum}`,
-          pages: allPages
+          pages: chapterPages
         })
-        console.log(`✅ Capítulo ${chapterNum}: ${allPages.length} páginas`)
-      } else {
-        console.log(`❌ Capítulo ${chapterNum} não encontrado, parando busca`)
-        break
+        console.log(`📚 Capítulo ${chapterNum} adicionado com ${chapterPages.length} páginas`)
       }
     }
-
-    console.log(`🎉 Total: ${chapters.length} capítulos carregados!`)
+    
+    console.log('✅ Capítulos encontrados:', chapters)
     return chapters
-
+    
   } catch (error) {
     console.error('💥 Erro:', error)
     return []
   }
+
 }
