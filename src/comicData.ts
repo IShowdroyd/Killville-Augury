@@ -20,58 +20,85 @@ export interface Chapter {
 
 export async function getAllChapters(): Promise<Chapter[]> {
   try {
-    console.log('🚀 Testando URLs diretas...')
-    
+    console.log('🚀 Carregando capítulos usando API do Supabase...')
+
     const chapters: Chapter[] = []
-    
-    // 🧪 TESTE: Vamos tentar URLs diretas e ver se as imagens existem
-    for (let chapterNum = 1; chapterNum <= 6; chapterNum++) {
-      console.log(`📖 Testando capítulo ${chapterNum}...`)
-      
-      const chapterPages: ComicPage[] = []
-      
-      // Tenta até 20 páginas por capítulo
-      for (let pageNum = 1; pageNum <= 50; pageNum++) {
-        const { data: urlData } = supabase.storage
-          .from('comic')
-          .getPublicUrl(`chapters/${chapterNum}/p${pageNum}.jpg`)
-        
-        // 🔍 Testa se a URL da imagem realmente existe
-        try {
-          const response = await fetch(urlData.publicUrl, { method: 'HEAD' })
-          if (response.ok) {
-            console.log(`✅ Encontrada: chapters/${chapterNum}/p${pageNum}.jpg`)
-            chapterPages.push({
-              pageNumber: pageNum,
-              imageUrl: urlData.publicUrl,
-              chapterNumber: chapterNum
-            })
-          } else {
-            console.log(`❌ Não encontrada: chapters/${chapterNum}/p${pageNum}.jpg`)
-            break // Para de procurar páginas neste capítulo
-          }
-        } catch (error) {
-          console.log(`❌ Erro ao testar: chapters/${chapterNum}/p${pageNum}.jpg`)
-          break
-        }
+
+    // Lista todas as pastas dentro de 'chapters/'
+    const { data: chapterFolders, error: foldersError } = await supabase.storage
+      .from('comic')
+      .list('chapters', {
+        limit: 100,
+        offset: 0,
+      })
+
+    if (foldersError) {
+      console.error('❌ Erro ao listar pastas:', foldersError)
+      return []
+    }
+
+    console.log('📁 Pastas encontradas:', chapterFolders)
+
+    // Para cada pasta de capítulo
+    for (const folder of chapterFolders) {
+      // Ignora se não for uma pasta (ex: arquivos soltos)
+      if (!folder.id) continue
+
+      const chapterNum = parseInt(folder.name)
+      if (isNaN(chapterNum)) continue
+
+      console.log(`📖 Carregando capítulo ${chapterNum}...`)
+
+      // Lista TODOS os arquivos deste capítulo de uma vez
+      const { data: files, error: filesError } = await supabase.storage
+        .from('comic')
+        .list(`chapters/${chapterNum}`, {
+          limit: 1000,
+          offset: 0,
+        })
+
+      if (filesError) {
+        console.error(`❌ Erro ao listar arquivos do capítulo ${chapterNum}:`, filesError)
+        continue
       }
-      
-      if (chapterPages.length > 0) {
+
+      // Filtra apenas .jpg e ordena por número
+      const pages = files
+        .filter(f => f.name.toLowerCase().endsWith('.jpg'))
+        .map(f => {
+          const match = f.name.match(/p(\d+)\.jpg/i)
+          const pageNum = match ? parseInt(match[1]) : 0
+
+          const { data: urlData } = supabase.storage
+            .from('comic')
+            .getPublicUrl(`chapters/${chapterNum}/${f.name}`)
+
+          return {
+            pageNumber: pageNum,
+            imageUrl: urlData.publicUrl,
+            chapterNumber: chapterNum
+          }
+        })
+        .sort((a, b) => a.pageNumber - b.pageNumber)
+
+      if (pages.length > 0) {
         chapters.push({
           chapterNumber: chapterNum,
           title: `Chapter ${chapterNum}`,
-          pages: chapterPages
+          pages: pages
         })
-        console.log(`📚 Capítulo ${chapterNum} adicionado com ${chapterPages.length} páginas`)
+        console.log(`✅ Capítulo ${chapterNum}: ${pages.length} páginas`)
       }
     }
-    
-    console.log('✅ Capítulos encontrados:', chapters)
+
+    // Ordena capítulos por número
+    chapters.sort((a, b) => a.chapterNumber - b.chapterNumber)
+
+    console.log(`🎉 Total: ${chapters.length} capítulos carregados!`)
     return chapters
-    
+
   } catch (error) {
     console.error('💥 Erro:', error)
     return []
   }
-
 }
