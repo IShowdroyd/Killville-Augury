@@ -20,79 +20,57 @@ export interface Chapter {
 
 export async function getAllChapters(): Promise<Chapter[]> {
   try {
-    console.log('🚀 Carregando capítulos usando API do Supabase...')
+    console.log('🚀 Carregando capítulos...')
 
     const chapters: Chapter[] = []
 
-    // Lista todas as pastas dentro de 'chapters/'
-    const { data: chapterFolders, error: foldersError } = await supabase.storage
-      .from('comic')
-      .list('chapters', {
-        limit: 100,
-        offset: 0,
+    // Para cada capítulo (1 a 10)
+    for (let chapterNum = 1; chapterNum <= 10; chapterNum++) {
+      console.log(`📖 Testando capítulo ${chapterNum}...`)
+
+      // Cria array de promessas para testar 50 páginas AO MESMO TEMPO
+      const pagePromises = Array.from({ length: 50 }, async (_, i) => {
+        const pageNum = i + 1
+        const { data: urlData } = supabase.storage
+          .from('comic')
+          .getPublicUrl(`chapters/${chapterNum}/p${pageNum}.jpg`)
+
+        try {
+          const response = await fetch(urlData.publicUrl, { method: 'HEAD' })
+          if (response.ok) {
+            return {
+              pageNumber: pageNum,
+              imageUrl: urlData.publicUrl,
+              chapterNumber: chapterNum
+            }
+          }
+        } catch {
+          return null
+        }
+        return null
       })
 
-    if (foldersError) {
-      console.error('❌ Erro ao listar pastas:', foldersError)
-      return []
-    }
+      // Aguarda TODAS as 50 requisições ao mesmo tempo
+      const results = await Promise.all(pagePromises)
 
-    console.log('📁 Pastas encontradas:', chapterFolders)
+      // Filtra só as páginas que existem
+      const chapterPages = results
+        .filter(page => page !== null)
+        .sort((a, b) => a!.pageNumber - b!.pageNumber) as ComicPage[]
 
-    // Para cada pasta de capítulo
-    for (const folder of chapterFolders) {
-      // Ignora se não for uma pasta (ex: arquivos soltos)
-      if (!folder.id) continue
-
-      const chapterNum = parseInt(folder.name)
-      if (isNaN(chapterNum)) continue
-
-      console.log(`📖 Carregando capítulo ${chapterNum}...`)
-
-      // Lista TODOS os arquivos deste capítulo de uma vez
-      const { data: files, error: filesError } = await supabase.storage
-        .from('comic')
-        .list(`chapters/${chapterNum}`, {
-          limit: 1000,
-          offset: 0,
-        })
-
-      if (filesError) {
-        console.error(`❌ Erro ao listar arquivos do capítulo ${chapterNum}:`, filesError)
-        continue
-      }
-
-      // Filtra apenas .jpg e ordena por número
-      const pages = files
-        .filter(f => f.name.toLowerCase().endsWith('.jpg'))
-        .map(f => {
-          const match = f.name.match(/p(\d+)\.jpg/i)
-          const pageNum = match ? parseInt(match[1]) : 0
-
-          const { data: urlData } = supabase.storage
-            .from('comic')
-            .getPublicUrl(`chapters/${chapterNum}/${f.name}`)
-
-          return {
-            pageNumber: pageNum,
-            imageUrl: urlData.publicUrl,
-            chapterNumber: chapterNum
-          }
-        })
-        .sort((a, b) => a.pageNumber - b.pageNumber)
-
-      if (pages.length > 0) {
+      if (chapterPages.length > 0) {
         chapters.push({
           chapterNumber: chapterNum,
           title: `Chapter ${chapterNum}`,
-          pages: pages
+          pages: chapterPages
         })
-        console.log(`✅ Capítulo ${chapterNum}: ${pages.length} páginas`)
+        console.log(`✅ Capítulo ${chapterNum}: ${chapterPages.length} páginas`)
+      } else {
+        // Se não encontrou nenhuma página, para de procurar capítulos
+        console.log(`❌ Capítulo ${chapterNum} não encontrado, parando busca`)
+        break
       }
     }
-
-    // Ordena capítulos por número
-    chapters.sort((a, b) => a.chapterNumber - b.chapterNumber)
 
     console.log(`🎉 Total: ${chapters.length} capítulos carregados!`)
     return chapters
