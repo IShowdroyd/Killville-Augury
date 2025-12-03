@@ -1,3 +1,4 @@
+// src/comicData.ts
 import { createClient } from '@supabase/supabase-js'
 
 const supabaseUrl = 'https://dokhoacjskbtvbgssfft.supabase.co'
@@ -19,43 +20,57 @@ export interface Chapter {
 
 export async function getAllChapters(): Promise<Chapter[]> {
   try {
-    console.log('⚡ Carregando capítulos (modo rápido)...')
+    console.log('🚀 Carregando capítulos usando chapters.json...')
 
-    // Carrega o arquivo de metadados
-    const response = await fetch('/chapters.json')
+    // Busca o arquivo chapters.json
+    const { data: urlData } = supabase.storage
+      .from('comic')
+      .getPublicUrl('chapters.json')
+
+    const response = await fetch(urlData.publicUrl)
     const chaptersData: Record<string, number> = await response.json()
+
+    console.log('📖 Dados do chapters.json:', chaptersData)
 
     const chapters: Chapter[] = []
 
-    for (const [chapterNum, pageCount] of Object.entries(chaptersData)) {
-      const chNum = parseInt(chapterNum)
+    // Para cada capítulo no JSON
+    for (const [chapterNumStr, pageCount] of Object.entries(chaptersData)) {
+      const chapterNum = parseInt(chapterNumStr)
+      console.log(`📖 Carregando capítulo ${chapterNum} (${pageCount} páginas)...`)
+
       const pages: ComicPage[] = []
 
+      // Cria as páginas baseado no número informado no JSON
       for (let pageNum = 1; pageNum <= pageCount; pageNum++) {
-        const { data: urlData } = supabase.storage
+        const { data: pageUrlData } = supabase.storage
           .from('comic')
-          .getPublicUrl(`chapters/${chNum}/p${pageNum}.jpg`)
+          .getPublicUrl(`chapters/${chapterNum}/p${pageNum}.jpg`)
 
         pages.push({
           pageNumber: pageNum,
-          imageUrl: urlData.publicUrl,
-          chapterNumber: chNum
+          imageUrl: pageUrlData.publicUrl,
+          chapterNumber: chapterNum
         })
       }
 
       chapters.push({
-        chapterNumber: chNum,
-        title: `Chapter ${chNum}`,
-        pages
+        chapterNumber: chapterNum,
+        title: `Chapter ${chapterNum}`,
+        pages: pages
       })
+
+      console.log(`✅ Capítulo ${chapterNum}: ${pages.length} páginas`)
     }
 
+    // Ordena capítulos por número
     chapters.sort((a, b) => a.chapterNumber - b.chapterNumber)
-    console.log(`✅ ${chapters.length} capítulos carregados instantaneamente!`)
+
+    console.log(`🎉 Total: ${chapters.length} capítulos carregados!`)
     return chapters
 
   } catch (error) {
-    console.error('💥 Erro:', error)
+    console.error('💥 Erro ao carregar chapters.json:', error)
     return []
   }
 }
