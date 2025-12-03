@@ -18,55 +18,71 @@ export interface Chapter {
   pages: ComicPage[]
 }
 
+async function checkPagesInBatch(chapterNum: number, startPage: number, batchSize: number): Promise<ComicPage[]> {
+  const promises = Array.from({ length: batchSize }, async (_, i) => {
+    const pageNum = startPage + i
+    const { data: urlData } = supabase.storage
+      .from('comic')
+      .getPublicUrl(`chapters/${chapterNum}/p${pageNum}.jpg`)
+
+    try {
+      const response = await fetch(urlData.publicUrl, { method: 'HEAD' })
+      if (response.ok) {
+        return {
+          pageNumber: pageNum,
+          imageUrl: urlData.publicUrl,
+          chapterNumber: chapterNum
+        }
+      }
+    } catch {
+      return null
+    }
+    return null
+  })
+
+  const results = await Promise.all(promises)
+  return results.filter(page => page !== null) as ComicPage[]
+}
+
 export async function getAllChapters(): Promise<Chapter[]> {
   try {
-    console.log('🚀 Carregando capítulos...')
+    console.log('🚀 Carregando capítulos em lotes...')
 
     const chapters: Chapter[] = []
 
-    // Para cada capítulo (1 a 10)
     for (let chapterNum = 1; chapterNum <= 10; chapterNum++) {
       console.log(`📖 Testando capítulo ${chapterNum}...`)
 
-      // Cria array de promessas para testar 50 páginas AO MESMO TEMPO
-      const pagePromises = Array.from({ length: 50 }, async (_, i) => {
-        const pageNum = i + 1
-        const { data: urlData } = supabase.storage
-          .from('comic')
-          .getPublicUrl(`chapters/${chapterNum}/p${pageNum}.jpg`)
+      const allPages: ComicPage[] = []
+      let currentPage = 1
+      const batchSize = 10 // Testa 10 páginas por vez
 
-        try {
-          const response = await fetch(urlData.publicUrl, { method: 'HEAD' })
-          if (response.ok) {
-            return {
-              pageNumber: pageNum,
-              imageUrl: urlData.publicUrl,
-              chapterNumber: chapterNum
-            }
-          }
-        } catch {
-          return null
+      // Carrega em lotes de 10 até não encontrar mais páginas
+      while (currentPage <= 50) {
+        const batch = await checkPagesInBatch(chapterNum, currentPage, batchSize)
+
+        if (batch.length === 0) {
+          break // Não encontrou mais páginas
         }
-        return null
-      })
 
-      // Aguarda TODAS as 50 requisições ao mesmo tempo
-      const results = await Promise.all(pagePromises)
+        allPages.push(...batch)
+        currentPage += batchSize
 
-      // Filtra só as páginas que existem
-      const chapterPages = results
-        .filter(page => page !== null)
-        .sort((a, b) => a!.pageNumber - b!.pageNumber) as ComicPage[]
+        // Se encontrou menos que o lote completo, provavelmente acabaram as páginas
+        if (batch.length < batchSize) {
+          break
+        }
+      }
 
-      if (chapterPages.length > 0) {
+      if (allPages.length > 0) {
+        allPages.sort((a, b) => a.pageNumber - b.pageNumber)
         chapters.push({
           chapterNumber: chapterNum,
           title: `Chapter ${chapterNum}`,
-          pages: chapterPages
+          pages: allPages
         })
-        console.log(`✅ Capítulo ${chapterNum}: ${chapterPages.length} páginas`)
+        console.log(`✅ Capítulo ${chapterNum}: ${allPages.length} páginas`)
       } else {
-        // Se não encontrou nenhuma página, para de procurar capítulos
         console.log(`❌ Capítulo ${chapterNum} não encontrado, parando busca`)
         break
       }
