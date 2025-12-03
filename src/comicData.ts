@@ -1,4 +1,3 @@
-// src/comicData.ts
 import { createClient } from '@supabase/supabase-js'
 
 const supabaseUrl = 'https://dokhoacjskbtvbgssfft.supabase.co'
@@ -20,58 +19,43 @@ export interface Chapter {
 
 export async function getAllChapters(): Promise<Chapter[]> {
   try {
-    console.log('🚀 Testando URLs diretas...')
-    
+    console.log('⚡ Carregando capítulos (modo rápido)...')
+
+    // Carrega o arquivo de metadados
+    const response = await fetch('/chapters.json')
+    const chaptersData: Record<string, number> = await response.json()
+
     const chapters: Chapter[] = []
-    
-    // 🧪 TESTE: Vamos tentar URLs diretas e ver se as imagens existem
-    for (let chapterNum = 1; chapterNum <= 6; chapterNum++) {
-      console.log(`📖 Testando capítulo ${chapterNum}...`)
-      
-      const chapterPages: ComicPage[] = []
-      
-      // Tenta até 20 páginas por capítulo
-      for (let pageNum = 1; pageNum <= 50; pageNum++) {
+
+    for (const [chapterNum, pageCount] of Object.entries(chaptersData)) {
+      const chNum = parseInt(chapterNum)
+      const pages: ComicPage[] = []
+
+      for (let pageNum = 1; pageNum <= pageCount; pageNum++) {
         const { data: urlData } = supabase.storage
           .from('comic')
-          .getPublicUrl(`chapters/${chapterNum}/p${pageNum}.jpg`)
-        
-        // 🔍 Testa se a URL da imagem realmente existe
-        try {
-          const response = await fetch(urlData.publicUrl, { method: 'HEAD' })
-          if (response.ok) {
-            console.log(`✅ Encontrada: chapters/${chapterNum}/p${pageNum}.jpg`)
-            chapterPages.push({
-              pageNumber: pageNum,
-              imageUrl: urlData.publicUrl,
-              chapterNumber: chapterNum
-            })
-          } else {
-            console.log(`❌ Não encontrada: chapters/${chapterNum}/p${pageNum}.jpg`)
-            break // Para de procurar páginas neste capítulo
-          }
-        } catch (error) {
-          console.log(`❌ Erro ao testar: chapters/${chapterNum}/p${pageNum}.jpg`)
-          break
-        }
-      }
-      
-      if (chapterPages.length > 0) {
-        chapters.push({
-          chapterNumber: chapterNum,
-          title: `Chapter ${chapterNum}`,
-          pages: chapterPages
+          .getPublicUrl(`chapters/${chNum}/p${pageNum}.jpg`)
+
+        pages.push({
+          pageNumber: pageNum,
+          imageUrl: urlData.publicUrl,
+          chapterNumber: chNum
         })
-        console.log(`📚 Capítulo ${chapterNum} adicionado com ${chapterPages.length} páginas`)
       }
+
+      chapters.push({
+        chapterNumber: chNum,
+        title: `Chapter ${chNum}`,
+        pages
+      })
     }
-    
-    console.log('✅ Capítulos encontrados:', chapters)
+
+    chapters.sort((a, b) => a.chapterNumber - b.chapterNumber)
+    console.log(`✅ ${chapters.length} capítulos carregados instantaneamente!`)
     return chapters
-    
+
   } catch (error) {
     console.error('💥 Erro:', error)
     return []
   }
-
 }
